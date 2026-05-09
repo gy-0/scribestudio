@@ -6,6 +6,7 @@ const { spawn } = require('node:child_process');
 
 let mainWindow;
 let activeJob = null;
+const DEFAULT_OUTPUT_DIR_NAME = 'ScribeStudio Output';
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -13,7 +14,7 @@ function createWindow() {
     height: 760,
     minWidth: 920,
     minHeight: 640,
-    title: '听稿',
+    title: 'ScribeStudio',
     backgroundColor: '#101114',
     show: false,
     webPreferences: {
@@ -32,31 +33,36 @@ function userConfigPath() {
   return path.join(app.getPath('userData'), 'config.json');
 }
 
+function legacyConfigPaths() {
+  const appData = app.getPath('appData');
+  return [
+    path.join(appData, 'tinggao', 'config.json'),
+    path.join(appData, '听稿', 'config.json')
+  ];
+}
+
+function defaultConfig() {
+  return {
+    apiKey: '',
+    appId: '',
+    accessToken: '',
+    language: 'zh-CN',
+    mode: 'flash',
+    formats: ['txt', 'srt', 'vtt', 'json', 'md'],
+    outputDir: path.join(app.getPath('documents'), DEFAULT_OUTPUT_DIR_NAME)
+  };
+}
+
 function loadConfig() {
   const file = userConfigPath();
-  if (!fs.existsSync(file)) {
-    return {
-      apiKey: '',
-      appId: '',
-      accessToken: '',
-      language: 'zh-CN',
-      mode: 'flash',
-      formats: ['txt', 'srt', 'vtt', 'json', 'md'],
-      outputDir: path.join(app.getPath('documents'), '听稿输出')
-    };
-  }
+  const candidates = fs.existsSync(file) ? [file] : legacyConfigPaths().filter((candidate) => fs.existsSync(candidate));
+  if (!candidates.length) return defaultConfig();
   try {
-    return JSON.parse(fs.readFileSync(file, 'utf8'));
+    const loaded = { ...defaultConfig(), ...JSON.parse(fs.readFileSync(candidates[0], 'utf8')) };
+    if (candidates[0] !== file) saveConfig(loaded);
+    return loaded;
   } catch {
-    return {
-      apiKey: '',
-      appId: '',
-      accessToken: '',
-      language: 'zh-CN',
-      mode: 'flash',
-      formats: ['txt', 'srt', 'vtt', 'json', 'md'],
-      outputDir: path.join(app.getPath('documents'), '听稿输出')
-    };
+    return defaultConfig();
   }
 }
 
@@ -68,7 +74,7 @@ function saveConfig(config) {
     language: String(config.language || 'zh-CN'),
     mode: String(config.mode || 'flash'),
     formats: Array.isArray(config.formats) ? config.formats : ['txt', 'srt', 'vtt', 'json', 'md'],
-    outputDir: String(config.outputDir || path.join(app.getPath('documents'), '听稿输出')),
+    outputDir: String(config.outputDir || path.join(app.getPath('documents'), DEFAULT_OUTPUT_DIR_NAME)),
     resourceId: String(config.resourceId || ''),
     context: String(config.context || ''),
     speaker: Boolean(config.speaker),
@@ -81,9 +87,9 @@ function saveConfig(config) {
 
 function cliPath() {
   if (app.isPackaged) {
-    return path.join(process.resourcesPath, 'app.asar.unpacked', 'bin', 'tinggao.mjs');
+    return path.join(process.resourcesPath, 'app.asar.unpacked', 'bin', 'scribestudio.mjs');
   }
-  return path.join(app.getAppPath(), 'bin', 'tinggao.mjs');
+  return path.join(app.getAppPath(), 'bin', 'scribestudio.mjs');
 }
 
 function cliWorkingDirectory() {
@@ -110,7 +116,7 @@ function buildCliArgs(payload) {
 
   args.push('--mode', payload.mode || 'flash');
   args.push('--formats', (payload.formats && payload.formats.length ? payload.formats : ['txt', 'srt', 'json']).join(','));
-  args.push('--out-dir', payload.outputDir || path.join(app.getPath('documents'), '听稿输出'));
+  args.push('--out-dir', payload.outputDir || path.join(app.getPath('documents'), DEFAULT_OUTPUT_DIR_NAME));
 
   if (payload.basename) args.push('--basename', payload.basename);
   if (payload.language) args.push('--language', payload.language);
@@ -266,7 +272,7 @@ ipcMain.handle('transcribe:start', async (_event, payload) => {
     });
     activeJob = child;
     emit('transcribe:state', { running: true });
-    emit('transcribe:log', `听稿任务已开始\n${args.map((x) => x.includes(' ') ? JSON.stringify(x) : x).join(' ')}\n\n`);
+    emit('transcribe:log', `ScribeStudio task started\n${args.map((x) => x.includes(' ') ? JSON.stringify(x) : x).join(' ')}\n\n`);
 
     let output = '';
     let errorOutput = '';

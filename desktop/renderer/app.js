@@ -1,6 +1,6 @@
 const $ = (id) => document.getElementById(id);
 
-const api = window.tinggao;
+const api = window.scribeStudio;
 const fields = {
   inputPath: $('inputPath'),
   url: $('url'),

@@ -1,42 +1,42 @@
-# 听稿 Design System
+# ScribeStudio Design System
 
-## 定位
+## Positioning
 
-听稿是一个生产工具，不是营销页。用户打开它时已经知道自己要转写，界面需要安静、可靠、清楚。
+ScribeStudio is a production workspace, not a marketing page. Users open it to turn media into usable text, captions, and reviewable timelines.
 
-## 设计关键词
+## Design Keywords
 
-- 安静：低饱和、少渐变、少口号。
-- 清楚：导入、设置、输出、开始四件事分区明确。
-- 稳：像桌面软件，不像网页活动页。
-- 中文优先：文案短句，按钮直给。
+- Calm: low saturation, restrained contrast, no slogan-heavy treatment.
+- Clear: source, preview, settings, outputs, and run state are visually distinct.
+- Capable: it should feel like a desktop media tool, not a demo page.
+- Bilingual-friendly: the interface can carry Chinese workflows while the project remains international.
 
-## 信息架构
+## Information Architecture
 
-1. 左侧：应用身份和导航。
-2. 顶部：当前任务标题与状态。
-3. 主区：来源、输出、日志。
-4. 右侧：开始按钮、识别设置、服务凭证。
+1. Left rail: product identity, navigation, provider status.
+2. Top bar: current job title, state, primary action.
+3. Main workspace: source selection, media preview, transcript/caption results.
+4. Inspector areas: credentials, recognition settings, output controls.
 
-## 文案规范
+## Copy Rules
 
-- 用“转写”“文稿”“字幕”“输出目录”等用户词。
-- 不在主界面出现底层模型名。
-- 不写广告式短语，不把技术卖点塞进主工作区。
-- 错误提示说下一步动作，例如“请先填写凭证”。
+- Use practical words: transcript, captions, timeline, output, media, source.
+- Keep provider and model names in settings/logs, not the primary workflow.
+- Avoid advertising copy and technical slogans in the main work area.
+- Error messages should tell the user the next action.
 
-## 视觉
+## Visual Direction
 
-- 背景：暖灰 `#f5f2ec`。
-- 卡片：近白 `#fffdf9`。
-- 主色：棕铜 `#7c4218`，有工具感和纸张感。
-- 字色：深墨 `#24211d`。
-- 边框：`#e4ded4`。
+- Background: warm gray `#f5f2ec`.
+- Surfaces: near-white `#fffdf9`.
+- Accent: bronze `#7c4218`, for a focused desktop-tool feel.
+- Text: ink `#24211d`.
+- Border: `#e4ded4`.
 
-## 组件
+## Components
 
-- Sidebar：固定 236px，承载品牌和导航。
-- Card：20px 圆角，细边框，弱阴影。
-- Drop zone：大面积虚线区域，核心导入入口。
-- Right inspector：集中承载高级设置，避免污染主流程。
-- Status pill：待开始 / 转写中 / 已完成 / 失败。
+- Sidebar: fixed product identity and navigation.
+- Workspace panels: restrained surfaces with clear task boundaries.
+- Drop zone: large, obvious source entry point.
+- Media preview: first-class surface for video/audio review.
+- Status pill: idle / running / complete / failed.

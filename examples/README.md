@@ -1,11 +1,11 @@
 # Examples
 
-Put sample audio/video files here locally if you want to test 听稿.
+Put sample audio/video files here locally if you want to test ScribeStudio.
 
 This directory intentionally does not commit media files.
 
 Example:
 
 ```bash
-node ../bin/tinggao.mjs ./your-sample.mp4 --formats txt,srt,vtt,json,md
+node ../bin/scribestudio.mjs ./your-sample.mp4 --formats txt,srt,vtt,json,md
 ```

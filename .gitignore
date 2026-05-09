@@ -18,6 +18,7 @@ experiments/
 
 # Temp/media
 .tinggao-tmp/
+.scribestudio-tmp/
 .whisperless-tmp/
 *.mp3.tmp
 *.wav.tmp

@@ -1,36 +1,38 @@
 # Desktop Architecture
 
-听稿是 desktop-first，CLI 引擎保留用于自动化和调试。
+ScribeStudio is desktop-first, with the CLI engine kept as the automation and debugging layer.
 
 ## Stack
 
-- Electron shell: macOS / Windows / Linux 桌面壳。
-- Renderer: plain HTML/CSS/JS，降低依赖和贡献门槛。
-- Main process: 文件选择、配置保存、进程编排、日志脱敏。
-- CLI engine: `bin/tinggao.mjs` 负责 ffmpeg 音频准备、ASR 调用和文件导出。
+- Electron shell: macOS / Windows / Linux desktop app.
+- Renderer: plain HTML/CSS/JS to keep the contribution path simple.
+- Main process: file selection, config persistence, process orchestration, and log redaction.
+- CLI engine: `bin/scribestudio.mjs` handles ffmpeg audio preparation, ASR calls, and file exports.
 
-## Why Electron first
+## Why Electron First
 
-Tauri 更轻，长期值得考虑。第一版用 Electron 是为了复用 Node CLI，快速做出能跑、能打包、能给 GitHub 用户试用的桌面版。
+Tauri may be worth exploring later. The first version uses Electron because it can reuse the Node CLI quickly and package a working cross-platform desktop app.
 
-## Data flow
+## Data Flow
 
 ```mermaid
 flowchart LR
-  A[用户导入音频/视频] --> B[桌面界面]
-  B --> C[主进程 IPC]
-  C --> D[CLI 引擎]
-  D --> E[ffmpeg 准备音频]
-  E --> F[火山引擎 / 豆包 ASR]
+  A[User imports audio, video, or URL] --> B[Desktop workspace]
+  B --> C[Main process IPC]
+  C --> D[CLI engine]
+  D --> E[ffmpeg audio preparation]
+  E --> F[Volcengine / Doubao ASR]
   F --> G[TXT / SRT / VTT / JSON / MD]
-  G --> H[输出目录]
+  G --> H[In-app transcript and output directory]
 ```
 
 ## Secrets
 
-桌面版凭证保存在 Electron userData 目录，不写入项目仓库。日志展示前会做基础脱敏。
+The desktop app stores credentials in the Electron user data directory and never writes them to the repository. Logs are redacted before being shown in the renderer.
 
-## Release targets
+When migrating from the early `tinggao` / `听稿` builds, ScribeStudio attempts to read the legacy config and saves it into the new app config path.
+
+## Release Targets
 
 - macOS: DMG / ZIP
 - Windows: NSIS installer / portable EXE

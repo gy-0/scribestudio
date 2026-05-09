@@ -1,48 +1,48 @@
-# 听稿 Product Brief
+# ScribeStudio Product Brief
 
-## 一句话
+## One Sentence
 
-听稿是一个桌面端音视频转写工具：导入录音或视频，生成文稿、字幕和时间轴。
+ScribeStudio is a desktop media transcription studio: import local media or paste a source URL, extract audio, transcribe speech, generate captions, and review everything in one workspace.
 
-## 名字
+## Name
 
-最终建议：**听稿**。
+Final name: **ScribeStudio**.
 
-理由：
+Why it fits:
 
-- 直观：听声音，出稿子。
-- 不绑定任何底层模型或厂商。
-- 中文产品感比英文技术名强。
-- Repo 可用 `tinggao`，短、干净、容易记。
-- 后续扩展到字幕、访谈稿、会议稿、课程稿都成立。
+- "Scribe" points to transcription without binding the product to Whisper, Doubao, or any single model.
+- "Studio" matches the intended workflow: media preview, caption generation, transcript review, exports, and future URL ingestion.
+- The name can grow from a local transcription utility into a broader media-to-text workbench.
+- Repo name: `scribestudio`.
 
-备选名：
+## Target Users
 
-- 声稿：更有品牌感，但“声”到“稿”的动作感稍弱。
-- 秒稿：强调速度，但容易显得像营销词。
-- 听转：极直白，但不够像成熟软件名。
-- 字幕匠：偏字幕，不覆盖文稿和访谈整理。
-- 录转：工具感强，品牌感弱。
+1. Video creators who need SRT / VTT captions from source footage.
+2. Podcast creators who need editable transcripts from episodes.
+3. Interviewers and researchers who need searchable, timestamped transcripts.
+4. Course and meeting users who need reusable notes from recordings.
 
-## 目标用户
+## Product Principles
 
-1. 视频创作者：需要从素材里快速生成 SRT / VTT。
-2. 播客作者：需要把录音转成可编辑文稿。
-3. 访谈整理：需要逐字稿、时间轴和引用定位。
-4. 课程 / 会议：需要可搜索、可归档的文字记录。
+- The first screen should be the real workspace, not a marketing page.
+- Source, preview, transcript, captions, and exports should feel connected.
+- Use high-quality audio preparation by default; do not degrade audio unless required by provider limits.
+- Keep provider/model details in settings and logs rather than the primary workflow.
+- Make the default path reliable: Chinese language hint, flash mode, and common export formats.
+- Credentials are necessary configuration, but they should not dominate the main interface.
 
-## 产品原则
+## MVP Scope
 
-- 主界面不是官网落地页，不写大段卖点。
-- 第一屏只回答用户打开软件后的问题：我要导入什么、输出到哪、什么时候开始。
-- 技术名词放到设置里，不放在主行动线上。
-- 默认值要靠谱：中文、极速模式、TXT/SRT/VTT/JSON/MD 全开。
-- 凭证是必要配置，但不要抢主视觉。
+- Desktop GUI first.
+- CLI engine retained for automation and debugging.
+- Local files use flash mode.
+- Remote audio URLs use standard mode.
+- Export text, SRT, VTT, Markdown, and raw JSON.
+- Preview local audio/video and hydrate transcription results into the app.
 
-## MVP 范围
+## Expansion Direction
 
-- 桌面 GUI 先行。
-- CLI 保留为核心引擎。
-- 本地文件走极速模式。
-- 远程 URL 走标准模式。
-- 输出文稿、字幕、Markdown 和原始 JSON。
+- Paste URLs from video sites, podcast pages, and hosted media.
+- Download web media, extract original audio, and generate subtitles/transcripts.
+- Caption review inside the video player.
+- Project history and batch workflows.

@@ -16,16 +16,16 @@ const VIDEO_EXTENSIONS = new Set(['.mp4', '.mov', '.mkv', '.avi', '.webm', '.m4v
 
 function printHelp() {
   console.log(`
-听稿 — 音视频转写与字幕生成工具。
+ScribeStudio — media transcription and caption studio.
 
 Usage:
-  tinggao <audio-or-video-file> [options]
-  tinggao --url <audio-url> [options]
+  scribestudio <audio-or-video-file> [options]
+  scribestudio --url <audio-url> [options]
 
 Examples:
-  tinggao ./meeting.mp4 --formats txt,srt,vtt,json
-  tinggao ./voice.mp3 --language zh-CN --out-dir ./output
-  tinggao --url https://example.com/audio.mp3 --mode standard --speaker
+  scribestudio ./meeting.mp4 --formats txt,srt,vtt,json
+  scribestudio ./voice.mp3 --language zh-CN --out-dir ./output
+  scribestudio --url https://example.com/audio.mp3 --mode standard --speaker
 
 Options:
   --url <url>                 Transcribe a remote audio URL instead of a local file.
@@ -175,7 +175,7 @@ function runFfmpeg(args, purpose) {
 }
 
 function prepareWithFfmpeg(absolute, ext) {
-  const tmpDir = join(process.cwd(), '.tinggao-tmp');
+  const tmpDir = join(process.cwd(), '.scribestudio-tmp');
   mkdirSync(tmpDir, { recursive: true });
   const base = `${basename(absolute, ext)}-${Date.now()}`;
   const wavOut = join(tmpDir, `${base}.wav`);
@@ -232,7 +232,7 @@ function prepareLocalInput(inputPath) {
       fail('Video input requires ffmpeg. Install ffmpeg, or extract audio manually to WAV/MP3/OGG.');
     }
     if (size > FLASH_LIMIT_BYTES) {
-      fail('Local file is over 100MB for flash mode. Install ffmpeg so 听稿 can compress it, or use --mode standard with --url.');
+      fail('Local file is over 100MB for flash mode. Install ffmpeg so ScribeStudio can compress it, or use --mode standard with --url.');
     }
     fail(`Unsupported local format: ${ext}. Use WAV/MP3/OGG, or install ffmpeg for conversion.`);
   }

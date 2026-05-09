@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('tinggao', {
+contextBridge.exposeInMainWorld('scribeStudio', {
   chooseFile: () => ipcRenderer.invoke('dialog:choose-file'),
   chooseOutputDir: () => ipcRenderer.invoke('dialog:choose-output-dir'),
   loadConfig: () => ipcRenderer.invoke('config:load'),

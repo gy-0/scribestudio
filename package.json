@@ -1,15 +1,15 @@
 {
-  "name": "tinggao",
+  "name": "scribestudio",
   "version": "0.1.0",
   "description": "Cross-platform desktop app for audio/video transcription and subtitle generation powered by configurable cloud ASR providers.",
   "type": "module",
   "bin": {
-    "tinggao": "./bin/tinggao.mjs"
+    "scribestudio": "./bin/scribestudio.mjs"
   },
   "scripts": {
-    "start": "node ./bin/tinggao.mjs",
-    "transcribe": "node ./bin/tinggao.mjs",
-    "check": "node --check ./bin/tinggao.mjs && node --check ./desktop/main.cjs && node --check ./desktop/preload.cjs",
+    "start": "node ./bin/scribestudio.mjs",
+    "transcribe": "node ./bin/scribestudio.mjs",
+    "check": "node --check ./bin/scribestudio.mjs && node --check ./desktop/main.cjs && node --check ./desktop/preload.cjs",
     "desktop": "electron .",
     "dev": "electron .",
     "dist": "electron-builder",
@@ -40,8 +40,8 @@
   },
   "main": "desktop/main.cjs",
   "build": {
-    "appId": "dev.yuan.tinggao",
-    "productName": "听稿",
+    "appId": "dev.yuan.scribestudio",
+    "productName": "ScribeStudio",
     "directories": {
       "output": "release"
     },
