@@ -1,0 +1,79 @@
+{
+  "name": "tinggao",
+  "version": "0.1.0",
+  "description": "Cross-platform desktop app for audio/video transcription and subtitle generation powered by configurable cloud ASR providers.",
+  "type": "module",
+  "bin": {
+    "tinggao": "./bin/tinggao.mjs"
+  },
+  "scripts": {
+    "start": "node ./bin/tinggao.mjs",
+    "transcribe": "node ./bin/tinggao.mjs",
+    "check": "node --check ./bin/tinggao.mjs && node --check ./desktop/main.cjs && node --check ./desktop/preload.cjs",
+    "desktop": "electron .",
+    "dev": "electron .",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux"
+  },
+  "keywords": [
+    "asr",
+    "speech-to-text",
+    "transcription",
+    "subtitle",
+    "srt",
+    "vtt",
+    "doubao",
+    "volcengine",
+    "desktop-app",
+    "electron"
+  ],
+  "author": "Yuan",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "electron": "^41.5.0",
+    "electron-builder": "^26.8.1"
+  },
+  "main": "desktop/main.cjs",
+  "build": {
+    "appId": "dev.yuan.tinggao",
+    "productName": "听稿",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "desktop/**/*",
+      "bin/**/*",
+      "package.json",
+      "README.md",
+      "LICENSE"
+    ],
+    "asarUnpack": [
+      "bin/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility"
+    }
+  }
+}

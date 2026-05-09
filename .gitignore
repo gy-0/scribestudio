@@ -1,0 +1,28 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Outputs
+output/
+outputs/
+release/
+dist/
+build/
+experiments/
+*.srt
+*.vtt
+*.transcript.txt
+*.transcript.md
+*.asr.json
+
+# Temp/media
+.tinggao-tmp/
+.whisperless-tmp/
+*.mp3.tmp
+*.wav.tmp
+
+# Node / OS
+node_modules/
+npm-debug.log*
+.DS_Store

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>听稿</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="rail">
+        <div class="brand">
+          <div class="brand-mark">听</div>
+          <div>
+            <div class="brand-name">听稿</div>
+            <div class="brand-subtitle">字幕与转写工作台</div>
+          </div>
+        </div>
+        <nav class="nav-list" aria-label="主导航">
+          <button class="nav-item active" type="button"><span>＋</span>新建</button>
+          <button class="nav-item" type="button"><span>▤</span>结果</button>
+          <button class="nav-item" type="button"><span>⚙</span>设置</button>
+        </nav>
+        <div class="provider-chip">
+          <span>当前服务</span>
+          <strong>火山引擎 / 豆包 ASR</strong>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <h1>新建转写</h1>
+            <p>导入音视频、预览素材、生成字幕，并在软件内直接审听和校对。</p>
+          </div>
+          <div class="topbar-actions">
+            <span id="status" class="status idle">待开始</span>
+            <button id="start" class="primary" type="button">开始转写</button>
+          </div>
+        </header>
+
+        <section class="studio-grid">
+          <section class="left-pane">
+            <div class="panel source-panel">
+              <div class="panel-head">
+                <div>
+                  <h2>素材</h2>
+                  <p>支持拖放本地音视频，也可以填远程音频 URL。</p>
+                </div>
+              </div>
+              <div id="dropZone" class="drop-zone">
+                <div class="drop-icon">⌁</div>
+                <strong>拖入音频或视频</strong>
+                <span>mp3 / wav / ogg / mp4 / mov / mkv / webm</span>
+                <button id="chooseFile" class="secondary" type="button">选择文件</button>
+              </div>
+              <label class="field">
+                <span>本地文件</span>
+                <input id="inputPath" placeholder="选择或拖入一个文件" />
+              </label>
+              <label class="field">
+                <span>远程音频 URL</span>
+                <input id="url" placeholder="https://example.com/audio.mp3" />
+              </label>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head compact">
+                <div>
+                  <h2>输出</h2>
+                  <p>完成后会在右侧显示结果和文件清单。</p>
+                </div>
+                <button id="openOutput" class="ghost" type="button">打开目录</button>
+              </div>
+              <div class="format-grid">
+                <label><input type="checkbox" name="format" value="txt" checked /> TXT</label>
+                <label><input type="checkbox" name="format" value="srt" checked /> SRT</label>
+                <label><input type="checkbox" name="format" value="vtt" checked /> VTT</label>
+                <label><input type="checkbox" name="format" value="json" checked /> JSON</label>
+                <label><input type="checkbox" name="format" value="md" checked /> MD</label>
+              </div>
+              <div class="inline-field">
+                <button id="chooseOutput" class="secondary" type="button">选择目录</button>
+                <input id="outputDir" />
+              </div>
+              <label class="field">
+                <span>文件名前缀</span>
+                <input id="basename" placeholder="默认使用原文件名" />
+              </label>
+            </div>
+
+            <details class="panel settings-drawer">
+              <summary>识别与服务设置</summary>
+              <div class="settings-grid">
+                <label class="field">
+                  <span>模式</span>
+                  <select id="mode">
+                    <option value="flash">极速：本地文件</option>
+                    <option value="standard">标准：远程 URL</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>语言</span>
+                  <input id="language" placeholder="zh-CN" />
+                </label>
+                <label class="field span-2">
+                  <span>上下文提示词</span>
+                  <textarea id="context" rows="3" placeholder="人名、品牌名、专业术语、节目名称"></textarea>
+                </label>
+                <div class="switch-list span-2">
+                  <label><input id="speaker" type="checkbox" /> 说话人分离</label>
+                  <label><input id="ddc" type="checkbox" /> 清理口水词</label>
+                </div>
+                <label class="field">
+                  <span>Resource ID</span>
+                  <input id="resourceId" placeholder="默认自动选择" />
+                </label>
+                <label class="field">
+                  <span>API Key / App Key</span>
+                  <input id="apiKey" type="password" autocomplete="off" placeholder="新版控制台可只填这个" />
+                </label>
+                <label class="field">
+                  <span>App ID</span>
+                  <input id="appId" autocomplete="off" />
+                </label>
+                <label class="field">
+                  <span>Access Token</span>
+                  <input id="accessToken" type="password" autocomplete="off" />
+                </label>
+              </div>
+            </details>
+          </section>
+
+          <section class="center-pane">
+            <div class="media-stage">
+              <div class="media-toolbar">
+                <div>
+                  <h2>预览</h2>
+                  <p id="mediaMeta">导入本地素材后可在这里审看。</p>
+                </div>
+                <button id="theaterToggle" class="ghost" type="button" disabled>全屏审片</button>
+              </div>
+              <div id="emptyPreview" class="empty-preview">
+                <strong>等待素材</strong>
+                <span>视频会显示画面；音频会显示播放器。</span>
+              </div>
+              <video id="videoPreview" controls playsinline hidden></video>
+              <audio id="audioPreview" controls hidden></audio>
+              <div id="liveCaption" class="live-caption">字幕生成后会在这里跟随播放。</div>
+            </div>
+
+            <div class="panel files-panel">
+              <div class="panel-head compact">
+                <div>
+                  <h2>生成文件</h2>
+                  <p>不必去文件夹里猜，完成后可直接打开每个产物。</p>
+                </div>
+              </div>
+              <div id="fileList" class="file-list empty">还没有生成文件。</div>
+            </div>
+
+            <div class="panel log-panel">
+              <div class="panel-head compact">
+                <div>
+                  <h2>任务日志</h2>
+                  <p>抽音频、提交识别和文件写入进度。</p>
+                </div>
+                <button id="cancel" class="ghost danger" type="button" disabled>取消</button>
+              </div>
+              <pre id="log">等待任务开始。</pre>
+            </div>
+          </section>
+
+          <aside class="right-pane">
+            <div class="result-header">
+              <div>
+                <h2>识别结果</h2>
+                <p id="resultSummary">完成后会显示全文和时间轴。</p>
+              </div>
+              <div class="segmented">
+                <button class="tab active" data-view="segments" type="button">时间轴</button>
+                <button class="tab" data-view="text" type="button">全文</button>
+                <button class="tab" data-view="translate" type="button">翻译</button>
+              </div>
+            </div>
+
+            <div id="segmentsView" class="result-view">
+              <div id="segmentList" class="segment-list empty">暂无识别结果。</div>
+            </div>
+            <div id="textView" class="result-view" hidden>
+              <textarea id="fullText" class="transcript-text" placeholder="转写完成后会显示全文，可直接复制或编辑。"></textarea>
+            </div>
+            <div id="translateView" class="result-view" hidden>
+              <div class="translate-tools">
+                <select id="targetLanguage">
+                  <option value="英文">英文</option>
+                  <option value="中文">中文</option>
+                  <option value="日文">日文</option>
+                  <option value="韩文">韩文</option>
+                </select>
+                <button id="runLocalTranslate" class="secondary" type="button">本机翻译</button>
+                <button id="copyTranslatePrompt" class="secondary" type="button">复制翻译提示</button>
+              </div>
+              <textarea id="translationText" class="transcript-text" placeholder="这里用于整理翻译稿。可先复制提示词到你常用的翻译模型，再把结果贴回来校对。"></textarea>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <div id="theater" class="theater" hidden>
+      <div class="theater-bar">
+        <strong>全屏审片</strong>
+        <button id="closeTheater" class="ghost" type="button">退出</button>
+      </div>
+      <video id="theaterVideo" controls playsinline></video>
+      <div id="theaterCaption" class="theater-caption">选择一句字幕开始播放。</div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
