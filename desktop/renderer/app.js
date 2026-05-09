@@ -39,6 +39,8 @@ const theater = $('theater');
 const theaterVideo = $('theaterVideo');
 const theaterCaption = $('theaterCaption');
 const theaterToggle = $('theaterToggle');
+const LIVE_CAPTION_PLACEHOLDER = '字幕生成后会在这里跟随播放。';
+const THEATER_CAPTION_PLACEHOLDER = '选择一句字幕开始播放。';
 
 function appendLog(text) {
   if (log.textContent === '等待任务开始。') log.textContent = '';
@@ -213,9 +215,9 @@ function seekToUtterance(utterance) {
   updateCaption(utterance.text);
 }
 
-function updateCaption(text) {
-  liveCaption.textContent = text || '字幕生成后会在这里跟随播放。';
-  theaterCaption.textContent = text || '选择一句字幕开始播放。';
+function updateCaption(text, { showPlaceholder = false } = {}) {
+  liveCaption.textContent = text || (showPlaceholder ? LIVE_CAPTION_PLACEHOLDER : '');
+  theaterCaption.textContent = text || (showPlaceholder ? THEATER_CAPTION_PLACEHOLDER : '');
 }
 
 function currentUtterance(currentTime) {
@@ -225,7 +227,7 @@ function currentUtterance(currentTime) {
 
 function syncCaption(event) {
   const utterance = currentUtterance(event.currentTarget.currentTime);
-  updateCaption(utterance ? utterance.text : '');
+  updateCaption(utterance ? utterance.text : '', { showPlaceholder: !state.utterances.length });
 }
 
 function applyResult(transcript) {
@@ -240,6 +242,7 @@ function applyResult(transcript) {
       : '没有读到可展示的识别结果，请查看任务日志。';
   renderSegments(state.utterances);
   renderFiles(state.files);
+  updateCaption('', { showPlaceholder: !state.utterances.length });
 }
 
 function switchView(view) {
@@ -305,6 +308,7 @@ startButton.addEventListener('click', async () => {
   log.textContent = '';
   renderFiles([]);
   renderSegments([]);
+  updateCaption('', { showPlaceholder: true });
   setRunning(true);
   try {
     const result = await api.startTranscribe(data);
